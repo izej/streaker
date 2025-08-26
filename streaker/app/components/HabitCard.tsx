@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components/native";
 import { Pressable } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Habit } from "@/models/Habit";
 import { useHabitsStore } from "@/store/useHabitsStore";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const getRandomColor = () => {
   const colors = ["#FFCDD2", "#C8E6C9", "#BBDEFB", "#FFE0B2", "#D1C4E9"];
@@ -20,9 +20,27 @@ const Container = styled.View<{ bgColor: string }>`
   width: 100%;
 `;
 
+const LeftContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const IconWrapper = styled.View`
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+`;
+
+const EmojiIcon = styled.Text`
+  font-size: 32px;
+  line-height: 32px;
+`;
+
 const HabitName = styled.Text`
   font-size: 18px;
+  line-height: 24px;
   font-weight: bold;
+  flex-shrink: 1;
 `;
 
 export default function HabitCard({ habit }: { habit: Habit }) {
@@ -41,7 +59,13 @@ export default function HabitCard({ habit }: { habit: Habit }) {
 
   return (
     <Container bgColor={bgColor}>
-      <HabitName>{habit.name}</HabitName>
+      <LeftContainer>
+        <IconWrapper>
+          <EmojiIcon>{habit.icon || "🔥"}</EmojiIcon>
+        </IconWrapper>
+        <HabitName>{habit.name}</HabitName>
+      </LeftContainer>
+
       <Pressable onPress={() => (isDoneToday ? resetHabit(habit.id) : tickHabit(habit.id))}>
         <FontAwesome
           name={isDoneToday ? "times" : "check"}

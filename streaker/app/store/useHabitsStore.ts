@@ -19,14 +19,16 @@ export const useHabitsStore = create<HabitsState>((set, get) => ({
       createdAt: new Date().toISOString(),
       streak: 3,
       lastChecked: new Date().toISOString(),
-      color: "#d1c4e9"
+      color: "#d1c4e9",
+      icon: "🔥"
     },
     {
       id: uuidv4(),
       name: "Exercise",
       createdAt: new Date().toISOString(),
       streak: 0,
-      color: "#ffe0b2"
+      color: "#ffe0b2",
+      icon: "🔥"
     }
   ],
 
@@ -39,8 +41,8 @@ export const useHabitsStore = create<HabitsState>((set, get) => ({
           name,
           createdAt: new Date().toISOString(),
           streak: 0,
-          color: color ?? "#ccc", // default
-          icon: icon ?? "✅" // default emoji
+          color: color ?? "#ccc",
+          icon: icon ?? "🔥"
         }
       ]
     })),

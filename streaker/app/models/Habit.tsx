@@ -6,4 +6,5 @@ export interface Habit {
   longestStreak?: number;
   lastChecked?: string;
   color?: string;
+  icon?: string;
 }

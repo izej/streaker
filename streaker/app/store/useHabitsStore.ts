@@ -5,7 +5,7 @@ import { isSameDay } from "date-fns";
 
 interface HabitsState {
   habits: Habit[];
-  addHabit: (name: string) => void;
+  addHabit: (name: string, color?: string, icon?: string) => void;
   tickHabit: (id: string) => void;
   resetHabit: (id: string) => void;
   getHabitsByDate: (date: Date) => (Habit & { done: boolean })[];
@@ -30,11 +30,18 @@ export const useHabitsStore = create<HabitsState>((set, get) => ({
     }
   ],
 
-  addHabit: (name: string) =>
+  addHabit: (name: string, color?: string, icon?: string) =>
     set((state) => ({
       habits: [
         ...state.habits,
-        { id: uuidv4(), name, createdAt: new Date().toISOString(), streak: 0 }
+        {
+          id: uuidv4(),
+          name,
+          createdAt: new Date().toISOString(),
+          streak: 0,
+          color: color ?? "#ccc", // default
+          icon: icon ?? "✅" // default emoji
+        }
       ]
     })),
 

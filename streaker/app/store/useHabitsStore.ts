@@ -1,7 +1,7 @@
-import { create } from 'zustand';
-import { Habit } from '@/models/Habit';
-import { v4 as uuidv4 } from 'uuid';
-import { isSameDay } from 'date-fns';
+import { create } from "zustand";
+import { Habit } from "@/models/Habit";
+import { v4 as uuidv4 } from "uuid";
+import { isSameDay } from "date-fns";
 
 interface HabitsState {
   habits: Habit[];
@@ -11,33 +11,34 @@ interface HabitsState {
   getHabitsByDate: (date: Date) => (Habit & { done: boolean })[];
 }
 
-
 export const useHabitsStore = create<HabitsState>((set, get) => ({
   habits: [
     {
       id: uuidv4(),
-      name: 'Drink water',
+      name: "Drink water",
       createdAt: new Date().toISOString(),
       streak: 3,
       lastChecked: new Date().toISOString(),
-      color: '#d1c4e9'
+      color: "#d1c4e9"
     },
     {
       id: uuidv4(),
-      name: 'Exercise',
+      name: "Exercise",
       createdAt: new Date().toISOString(),
       streak: 0,
-      color: '#ffe0b2'
-    },
+      color: "#ffe0b2"
+    }
   ],
-  addHabit: (name) =>
+
+  addHabit: (name: string) =>
     set((state) => ({
       habits: [
         ...state.habits,
-        { id: uuidv4(), name, createdAt: new Date().toISOString(), streak: 0 },
-      ],
+        { id: uuidv4(), name, createdAt: new Date().toISOString(), streak: 0 }
+      ]
     })),
-  tickHabit: (id) =>
+
+  tickHabit: (id: string) =>
     set((state) => ({
       habits: state.habits.map((h) =>
         h.id === id
@@ -45,22 +46,27 @@ export const useHabitsStore = create<HabitsState>((set, get) => ({
             ...h,
             streak: h.streak + 1,
             lastChecked: new Date().toISOString(),
-            longestStreak: !h.longestStreak || h.streak + 1 > h.longestStreak ? h.streak + 1 : h.longestStreak,
+            longestStreak:
+              !h.longestStreak || h.streak + 1 > h.longestStreak
+                ? h.streak + 1
+                : h.longestStreak
           }
           : h
-      ),
+      )
     })),
-  resetHabit: (id) =>
+
+  resetHabit: (id: string) =>
     set((state) => ({
       habits: state.habits.map((h) =>
         h.id === id ? { ...h, streak: 0, lastChecked: undefined } : h
-      ),
+      )
     })),
+
   getHabitsByDate: (date: Date) => {
     const { habits } = get();
     return habits.map((h) => ({
       ...h,
-      done: h.lastChecked ? new Date(h.lastChecked).toDateString() === date.toDateString() : false,
+      done: h.lastChecked ? isSameDay(new Date(h.lastChecked), date) : false
     }));
-  },
+  }
 }));

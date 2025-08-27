@@ -15,8 +15,8 @@ const Container = styled.View<{ bgColor: string }>`
   justify-content: space-between;
   align-items: center;
   background-color: ${({ bgColor }) => bgColor};
-  padding: 16px;
-  border-radius: 20px;
+  padding: 12px;
+  border-radius: 50px;
   width: 100%;
 `;
 

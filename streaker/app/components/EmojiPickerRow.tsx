@@ -13,7 +13,7 @@ const isEmoji = (text: string) => /\p{Emoji}/u.test(text);
 export function EmojiPickerRow({
                                  selectedEmoji,
                                  onSelect,
-                                 quickEmojis = ["💧", "🏃", "📚", "🧘‍♀️", "🍎"],
+                                 quickEmojis = ["🍵", "🏃", "📖", "🧘‍♀️", "🥦"],
                                }: Props) {
   const inputRef = useRef<TextInput>(null);
 

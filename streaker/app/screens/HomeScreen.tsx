@@ -6,6 +6,7 @@ import HabitCard from "@/components/HabitCard";
 import WeekSelector from "@/components/WeekSelector";
 import styled from "styled-components/native";
 import { useRouter } from "expo-router";
+import { AppButton } from "@/components/AppButton";
 
 const SectionTitle = styled.Text`
   font-size: 20px;
@@ -16,19 +17,6 @@ const SectionTitle = styled.Text`
 
 const ListItem = styled.View`
   margin-bottom: 12px;
-`;
-
-const AddButton = styled.Pressable`
-  background-color: #2f95dc;
-  padding: 12px;
-  margin-vertical: 16px;
-  border-radius: 8px;
-  align-items: center;
-`;
-
-const AddButtonText = styled.Text`
-  color: #fff;
-  font-weight: bold;
 `;
 
 export default function HomeScreen() {
@@ -60,7 +48,7 @@ export default function HomeScreen() {
 
   return (
     <ScreenWrapper>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 16 }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ flex: 1, justifyContent: "space-between" }}>
           <View>
             <WeekSelector onSelectDay={setSelectedDate} />
@@ -85,10 +73,7 @@ export default function HomeScreen() {
               : <Text>Done – tylko dzisiaj można edytować</Text>
             }
           </View>
-
-          <AddButton onPress={handleAddHabit}>
-            <AddButtonText>Add New Habit</AddButtonText>
-          </AddButton>
+            <AppButton title="Add New Habit" onPress={handleAddHabit} />
         </View>
       </ScrollView>
     </ScreenWrapper>

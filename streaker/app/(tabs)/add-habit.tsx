@@ -6,14 +6,16 @@ import { useHabitsStore } from "@/store/useHabitsStore";
 import { useRouter } from "expo-router";
 import { EmojiPickerRow } from "@/components/EmojiPickerRow";
 import { ColorPickerRow } from "@/components/ColorPickerRow";
+import { AppButton } from "@/components/AppButton";
 
 const QUICK_COLORS = ["#d1c4e9", "#ffe0b2", "#c8e6c9", "#ffccbc"];
-
 const DEFAULT_EMOJI = "🔥";
 
 export default function AddHabitScreen() {
   const [name, setName] = useState("");
-  const [color, setColor] = useState(QUICK_COLORS[Math.floor(Math.random() * QUICK_COLORS.length)]);
+  const [color, setColor] = useState(
+    QUICK_COLORS[Math.floor(Math.random() * QUICK_COLORS.length)]
+  );
   const [emoji, setEmoji] = useState(DEFAULT_EMOJI);
 
   const addHabit = useHabitsStore((state) => state.addHabit);
@@ -29,29 +31,41 @@ export default function AddHabitScreen() {
     <ScreenWrapper>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{ flex: 1 }}>
-          <Label>Name</Label>
-          <NameInputWrapper borderColor={color}>
-            <EmojiInInput>{emoji}</EmojiInInput>
-            <NameInput
-              placeholder="Habit name"
-              value={name}
-              onChangeText={setName}
-              selectionColor={color}
-            />
-          </NameInputWrapper>
+          <Content>
+            <Label>Name</Label>
+            <NameInputWrapper borderColor={color}>
+              <EmojiInInput>{emoji}</EmojiInInput>
+              <NameInput
+                placeholder="Habit name"
+                value={name}
+                onChangeText={setName}
+                selectionColor={color}
+              />
+            </NameInputWrapper>
 
-          <Label>Color</Label>
-          <ColorPickerRow selectedColor={color} onSelect={setColor} />
+            <Label>Color</Label>
+            <ColorPickerRow selectedColor={color} onSelect={setColor} />
 
-          <Label>Emoji</Label>
-          <EmojiPickerRow selectedEmoji={emoji} onSelect={setEmoji} />
+            <Label>Emoji</Label>
+            <EmojiPickerRow selectedEmoji={emoji} onSelect={setEmoji} />
+          </Content>
 
-          <Button title="Add Habit" onPress={handleSubmit} />
+          <Footer>
+            <AppButton title="Add Habit" onPress={handleSubmit} />
+          </Footer>
         </View>
       </TouchableWithoutFeedback>
     </ScreenWrapper>
   );
 }
+
+const Content = styled.View`
+  flex: 1;
+`;
+
+const Footer = styled.View`
+  justify-content: flex-end;
+`;
 
 const NameInputWrapper = styled.View<{ borderColor: string }>`
   flex-direction: row;
@@ -80,4 +94,3 @@ const Label = styled.Text`
   margin-bottom: 4px;
   margin-top: 12px;
 `;
-

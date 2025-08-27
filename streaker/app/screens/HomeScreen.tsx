@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useHabitsStore } from "@/store/useHabitsStore";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import HabitCard from "@/components/HabitCard";

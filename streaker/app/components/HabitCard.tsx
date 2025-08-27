@@ -4,13 +4,15 @@ import { Pressable } from "react-native";
 import { Habit } from "@/models/Habit";
 import { useHabitsStore } from "@/store/useHabitsStore";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useRouter } from "expo-router";
+import { isSameDay } from "date-fns";
 
 const getRandomColor = () => {
   const colors = ["#FFCDD2", "#C8E6C9", "#BBDEFB", "#FFE0B2", "#D1C4E9"];
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const Container = styled.View<{ bgColor: string }>`
+const Container = styled.TouchableOpacity<{ bgColor: string }>`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -46,19 +48,19 @@ const HabitName = styled.Text`
 export default function HabitCard({ habit }: { habit: Habit }) {
   const tickHabit = useHabitsStore((state) => state.tickHabit);
   const resetHabit = useHabitsStore((state) => state.resetHabit);
+  const router = useRouter();
 
-  const lastChecked = habit.lastChecked ? new Date(habit.lastChecked) : null;
   const today = new Date();
   const isDoneToday =
-    lastChecked &&
-    lastChecked.getDate() === today.getDate() &&
-    lastChecked.getMonth() === today.getMonth() &&
-    lastChecked.getFullYear() === today.getFullYear();
+    habit.doneDates?.some((d) => isSameDay(new Date(d), today)) ?? false;
 
   const bgColor = habit.color || getRandomColor();
 
   return (
-    <Container bgColor={bgColor}>
+    <Container bgColor={bgColor} onPress={() => router.push({
+      pathname: "/habit/[id]",
+      params: { id: habit.id.toString() }
+    })}>
       <LeftContainer>
         <IconWrapper>
           <EmojiIcon>{habit.icon || "🔥"}</EmojiIcon>
@@ -66,7 +68,12 @@ export default function HabitCard({ habit }: { habit: Habit }) {
         <HabitName>{habit.name}</HabitName>
       </LeftContainer>
 
-      <Pressable onPress={() => (isDoneToday ? resetHabit(habit.id) : tickHabit(habit.id))}>
+      <Pressable
+        onPress={(e) => {
+          e.stopPropagation();
+          isDoneToday ? resetHabit(habit.id) : tickHabit(habit.id);
+        }}
+      >
         <FontAwesome
           name={isDoneToday ? "times" : "check"}
           size={24}

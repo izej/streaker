@@ -25,12 +25,13 @@ export default function HomeScreen() {
   const habits = useHabitsStore((state) => state.habits);
 
   const habitsForSelectedDate = useMemo(() => {
-    return habits.map((h) => ({
-      ...h,
-      done: h.lastChecked
-        ? new Date(h.lastChecked).toDateString() === selectedDate.toDateString()
-        : false
-    }));
+    return habits.map((h) => {
+      const selectedDateString = selectedDate.toDateString();
+      const isDone = h.doneDates?.some(
+        (d) => new Date(d).toDateString() === selectedDateString
+      );
+      return { ...h, done: isDone };
+    });
   }, [selectedDate, habits]);
 
   const toDo = habitsForSelectedDate.filter((h) => !h.done);
@@ -54,26 +55,22 @@ export default function HomeScreen() {
             <WeekSelector onSelectDay={setSelectedDate} />
 
             <SectionTitle>To Do</SectionTitle>
-            {isToday(selectedDate)
-              ? toDo.map((h) => (
-                <ListItem key={h.id}>
-                  <HabitCard habit={h} />
-                </ListItem>
-              ))
-              : <Text>To Do – tylko dzisiaj można edytować</Text>
+            {toDo.map((h) => (
+              <ListItem key={h.id}>
+                <HabitCard habit={h} readOnly={!isToday(selectedDate)} selectedDate={selectedDate}/>
+              </ListItem>
+            ))
             }
 
             <SectionTitle>Done</SectionTitle>
-            {isToday(selectedDate)
-              ? done.map((h) => (
-                <ListItem key={h.id}>
-                  <HabitCard habit={h} />
-                </ListItem>
-              ))
-              : <Text>Done – tylko dzisiaj można edytować</Text>
+            {done.map((h) => (
+              <ListItem key={h.id}>
+                <HabitCard habit={h} readOnly={!isToday(selectedDate)} selectedDate={selectedDate}/>
+              </ListItem>
+            ))
             }
           </View>
-            <AppButton title="Add New Habit" onPress={handleAddHabit} />
+          <AppButton title="Add New Habit" onPress={handleAddHabit} />
         </View>
       </ScrollView>
     </ScreenWrapper>

@@ -45,14 +45,13 @@ const HabitName = styled.Text`
   flex-shrink: 1;
 `;
 
-export default function HabitCard({ habit }: { habit: Habit }) {
+export default function HabitCard({ habit, readOnly, selectedDate }: { habit: Habit, readOnly: boolean, selectedDate: Date }) {
   const tickHabit = useHabitsStore((state) => state.tickHabit);
   const resetHabit = useHabitsStore((state) => state.resetHabit);
   const router = useRouter();
 
-  const today = new Date();
-  const isDoneToday =
-    habit.doneDates?.some((d) => isSameDay(new Date(d), today)) ?? false;
+  const isDone =
+    habit.doneDates?.some((d) => isSameDay(new Date(d), selectedDate)) ?? false;
 
   const bgColor = habit.color || getRandomColor();
 
@@ -68,18 +67,21 @@ export default function HabitCard({ habit }: { habit: Habit }) {
         <HabitName>{habit.name}</HabitName>
       </LeftContainer>
 
-      <Pressable
-        onPress={(e) => {
-          e.stopPropagation();
-          isDoneToday ? resetHabit(habit.id) : tickHabit(habit.id);
-        }}
-      >
-        <FontAwesome
-          name={isDoneToday ? "times" : "check"}
-          size={24}
-          color="#333"
-        />
-      </Pressable>
+      {
+        !readOnly && <Pressable
+          onPress={(e) => {
+            e.stopPropagation();
+            isDone ? resetHabit(habit.id) : tickHabit(habit.id);
+          }}
+        >
+          <FontAwesome
+            name={isDone ? "times" : "check"}
+            size={24}
+            color="#333"
+          />
+        </Pressable>
+      }
+
     </Container>
   );
 }

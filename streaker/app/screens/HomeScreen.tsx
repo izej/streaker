@@ -7,6 +7,7 @@ import WeekSelector from "@/components/WeekSelector";
 import styled from "styled-components/native";
 import { useRouter } from "expo-router";
 import { AppButton } from "@/components/AppButton";
+import {useTranslation} from "react-i18next";
 
 const SectionTitle = styled.Text`
   font-size: 20px;
@@ -20,6 +21,8 @@ const ListItem = styled.View`
 `;
 
 export default function HomeScreen() {
+  const { t } = useTranslation();
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const router = useRouter();
   const habits = useHabitsStore((state) => state.habits);
@@ -54,7 +57,7 @@ export default function HomeScreen() {
           <View>
             <WeekSelector onSelectDay={setSelectedDate} />
 
-            <SectionTitle>To Do</SectionTitle>
+            <SectionTitle>{t("home.to_do")}</SectionTitle>
             {toDo.map((h) => (
               <ListItem key={h.id}>
                 <HabitCard habit={h} readOnly={!isToday(selectedDate)} selectedDate={selectedDate}/>
@@ -62,7 +65,7 @@ export default function HomeScreen() {
             ))
             }
 
-            <SectionTitle>Done</SectionTitle>
+            <SectionTitle>{t("home.done")}</SectionTitle>
             {done.map((h) => (
               <ListItem key={h.id}>
                 <HabitCard habit={h} readOnly={!isToday(selectedDate)} selectedDate={selectedDate}/>
@@ -70,7 +73,7 @@ export default function HomeScreen() {
             ))
             }
           </View>
-          <AppButton title="Add New Habit" onPress={handleAddHabit} />
+          <AppButton title={t("home.add_button")} onPress={handleAddHabit} />
         </View>
       </ScrollView>
     </ScreenWrapper>

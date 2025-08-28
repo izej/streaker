@@ -6,6 +6,7 @@ import {
   eachDayOfInterval, format, isSameDay, isSameMonth, addMonths
 } from "date-fns";
 import { MaterialIcons } from "@expo/vector-icons";
+import { getCurrentLocale } from "@/utils/date";
 
 const CalendarContainer = styled.View`
   padding: 16px;
@@ -86,18 +87,23 @@ export default function HabitCalendar({ doneDates }: HabitCalendarProps) {
       </Header>
 
       <WeekRow>
-        {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d) => (
-          <DayCell key={d}>
-            <Text style={{ fontWeight: "bold" }}>{d}</Text>
-          </DayCell>
-        ))}
+        {Array.from({ length: 7 }).map((_, i) => {
+          const date = new Date(2023, 0, i + 1);
+          return (
+            <DayCell key={i}>
+              <Text style={{ fontWeight: "bold" }}>
+                {format(date, "EEE", { locale: getCurrentLocale() })}
+              </Text>
+            </DayCell>
+          );
+        })}
       </WeekRow>
 
       {Array.from({ length: days.length / 7 }).map((_, weekIndex) => {
         const weekDays = days.slice(weekIndex * 7, weekIndex * 7 + 7);
         return (
           <WeekRow key={weekIndex}>
-            {weekDays.map((day, i) => {
+            {weekDays.map((day) => {
               const done = isDone(day);
 
               const dayIndex = days.findIndex(d => isSameDay(d, day));

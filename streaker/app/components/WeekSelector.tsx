@@ -5,6 +5,8 @@ import { startOfWeek, addDays, format, isSameDay } from "date-fns";
 import { MaterialIcons } from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Colors from "@/constants/Colors";
+import { useTranslation } from "react-i18next";
+import { getCurrentLocale } from "@/utils/date";
 
 const Header = styled.View`
   flex-direction: row;
@@ -65,6 +67,8 @@ const DayShort = styled.Text`
 `;
 
 export default function WeekSelector({ onSelectDay }: { onSelectDay: (date: Date) => void }) {
+  const { t } = useTranslation();
+
   const today = new Date();
   const weekStart = startOfWeek(today, { weekStartsOn: 1 });
 
@@ -94,7 +98,7 @@ export default function WeekSelector({ onSelectDay }: { onSelectDay: (date: Date
             onSelectDay(today);
           }}
         >
-          <Text>Today</Text>
+          <Text>{t("home.today_button")}</Text>
         </TodayButton>
       </Header>
 
@@ -111,7 +115,7 @@ export default function WeekSelector({ onSelectDay }: { onSelectDay: (date: Date
               android_ripple={{ color: "transparent" }}
               selected={isSelected}
             >
-              <DayShort>{format(day, "EEE")}</DayShort>
+              <DayShort>{format(day, "EEE", { locale: getCurrentLocale() })}</DayShort>
               <DayCircle selected={isSelected}>
                 <DayNumber>{format(day, "dd")}</DayNumber>
               </DayCircle>

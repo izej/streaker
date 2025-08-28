@@ -1,0 +1,18 @@
+{
+  "tabs": {
+    "home": "Home",
+    "add_habit": "Add Habit",
+    "stats": "Stats"
+  },
+  "home": {
+    "today_button": "Today",
+    "add_button": "Add New Habit"
+  },
+  "add_habit": {
+    "name": "Name",
+    "name_placeholder": "Habit name",
+    "color": "Color",
+    "emoji": "Emoji",
+    "add_button": "Add Habit"
+  }
+}

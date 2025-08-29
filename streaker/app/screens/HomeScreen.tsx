@@ -9,17 +9,6 @@ import { useRouter } from "expo-router";
 import { AppButton } from "@/components/AppButton";
 import {useTranslation} from "react-i18next";
 
-const SectionTitle = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 16px;
-  margin-bottom: 8px;
-`;
-
-const ListItem = styled.View`
-  margin-bottom: 12px;
-`;
-
 export default function HomeScreen() {
   const { t } = useTranslation();
 
@@ -79,3 +68,14 @@ export default function HomeScreen() {
     </ScreenWrapper>
   );
 }
+
+const SectionTitle = styled.Text`
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 16px;
+  margin-bottom: 8px;
+`;
+
+const ListItem = styled.View`
+  margin-bottom: 12px;
+`;

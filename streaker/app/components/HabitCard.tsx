@@ -12,39 +12,6 @@ const getRandomColor = () => {
   return colors[Math.floor(Math.random() * colors.length)];
 };
 
-const Container = styled.TouchableOpacity<{ bgColor: string }>`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background-color: ${({ bgColor }) => bgColor};
-  padding: 12px;
-  border-radius: 50px;
-  width: 100%;
-`;
-
-const LeftContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const IconWrapper = styled.View`
-  justify-content: center;
-  align-items: center;
-  margin-right: 12px;
-`;
-
-const EmojiIcon = styled.Text`
-  font-size: 32px;
-  line-height: 32px;
-`;
-
-const HabitName = styled.Text`
-  font-size: 18px;
-  line-height: 24px;
-  font-weight: bold;
-  flex-shrink: 1;
-`;
-
 export default function HabitCard({ habit, readOnly, selectedDate }: { habit: Habit, readOnly: boolean, selectedDate: Date }) {
   const tickHabit = useHabitsStore((state) => state.tickHabit);
   const resetHabit = useHabitsStore((state) => state.resetHabit);
@@ -85,3 +52,36 @@ export default function HabitCard({ habit, readOnly, selectedDate }: { habit: Ha
     </Container>
   );
 }
+
+const Container = styled.TouchableOpacity<{ bgColor: string }>`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: ${({ bgColor }) => bgColor};
+  padding: 12px;
+  border-radius: 50px;
+  width: 100%;
+`;
+
+const LeftContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const IconWrapper = styled.View`
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+`;
+
+const EmojiIcon = styled.Text`
+  font-size: 32px;
+  line-height: 32px;
+`;
+
+const HabitName = styled.Text`
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: bold;
+  flex-shrink: 1;
+`;

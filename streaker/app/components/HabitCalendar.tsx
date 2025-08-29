@@ -8,51 +8,6 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { getCurrentLocale } from "@/utils/date";
 
-const CalendarContainer = styled.View`
-  padding: 16px;
-`;
-
-const Header = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-const HeaderText = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const WeekRow = styled.View`
-  flex-direction: row;
-`;
-
-const DayCell = styled.View`
-  flex: 1;
-  aspect-ratio: 1;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-`;
-
-const DayText = styled.Text<{ isCurrentMonth: boolean }>`
-  color: ${({ isCurrentMonth }) => (isCurrentMonth ? "#000" : "#ccc")};
-`;
-
-const MarkerBackground = styled.View<{ isStart: boolean; isEnd: boolean }>`
-  position: absolute;
-  top: 25%;
-  bottom: 25%;
-  left: 0;
-  right: 0;
-  background-color: rgba(155, 89, 182, 0.3);
-  border-top-left-radius: ${({ isStart }) => (isStart ? "20px" : "0px")};
-  border-bottom-left-radius: ${({ isStart }) => (isStart ? "20px" : "0px")};
-  border-top-right-radius: ${({ isEnd }) => (isEnd ? "20px" : "0px")};
-  border-bottom-right-radius: ${({ isEnd }) => (isEnd ? "20px" : "0px")};
-`;
-
 type HabitCalendarProps = {
   doneDates: Date[];
 };
@@ -130,3 +85,48 @@ export default function HabitCalendar({ doneDates }: HabitCalendarProps) {
     </CalendarContainer>
   );
 }
+
+const CalendarContainer = styled.View`
+  padding: 16px;
+`;
+
+const Header = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+`;
+
+const HeaderText = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const WeekRow = styled.View`
+  flex-direction: row;
+`;
+
+const DayCell = styled.View`
+  flex: 1;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+`;
+
+const DayText = styled.Text<{ isCurrentMonth: boolean }>`
+  color: ${({ isCurrentMonth }) => (isCurrentMonth ? "#000" : "#ccc")};
+`;
+
+const MarkerBackground = styled.View<{ isStart: boolean; isEnd: boolean }>`
+  position: absolute;
+  top: 25%;
+  bottom: 25%;
+  left: 0;
+  right: 0;
+  background-color: rgba(155, 89, 182, 0.3);
+  border-top-left-radius: ${({ isStart }) => (isStart ? "20px" : "0px")};
+  border-bottom-left-radius: ${({ isStart }) => (isStart ? "20px" : "0px")};
+  border-top-right-radius: ${({ isEnd }) => (isEnd ? "20px" : "0px")};
+  border-bottom-right-radius: ${({ isEnd }) => (isEnd ? "20px" : "0px")};
+`;

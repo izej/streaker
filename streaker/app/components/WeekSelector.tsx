@@ -8,64 +8,6 @@ import Colors from "@/constants/Colors";
 import { useTranslation } from "react-i18next";
 import { getCurrentLocale } from "@/utils/date";
 
-const Header = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-`;
-
-const IconButton = styled.Pressable`
-  padding: 8px;
-`;
-
-const TodayButton = styled.Pressable`
-  padding: 8px;
-`;
-
-const MonthText = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const WeekContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 16px;
-`;
-
-const DayButton = styled.Pressable<{ selected?: boolean }>`
-  flex: 1;
-  margin-right: 4px;
-  padding: 4px;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  border-radius: 25px !important;
-  max-width: 48px;
-  background-color: ${({ selected }) => (selected ? "#E0BBFF" : "transparent")};
-`;
-
-const DayCircle = styled.View<{ selected?: boolean }>`
-  width: 38px;
-  height: 38px;
-  border-radius: 20px !important;
-  overflow: hidden;
-  background-color: ${({ selected }) => (selected ? Colors.light.background : "#eedaff")};
-  align-items: center;
-  justify-content: center;
-`;
-
-const DayNumber = styled.Text`
-  font-weight: bold;
-`;
-
-const DayShort = styled.Text`
-  font-size: 12px;
-  flex-shrink: 0;
-  margin-bottom: 2px;
-`;
-
 export default function WeekSelector({ onSelectDay }: { onSelectDay: (date: Date) => void }) {
   const { t } = useTranslation();
 
@@ -134,3 +76,61 @@ export default function WeekSelector({ onSelectDay }: { onSelectDay: (date: Date
     </>
   );
 }
+
+const Header = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+`;
+
+const IconButton = styled.Pressable`
+  padding: 8px;
+`;
+
+const TodayButton = styled.Pressable`
+  padding: 8px;
+`;
+
+const MonthText = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const WeekContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 16px;
+`;
+
+const DayButton = styled.Pressable<{ selected?: boolean }>`
+  flex: 1;
+  margin-right: 4px;
+  padding: 4px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 25px !important;
+  max-width: 48px;
+  background-color: ${({ selected }) => (selected ? "#E0BBFF" : "transparent")};
+`;
+
+const DayCircle = styled.View<{ selected?: boolean }>`
+  width: 38px;
+  height: 38px;
+  border-radius: 20px !important;
+  overflow: hidden;
+  background-color: ${({ selected }) => (selected ? Colors.light.background : "#eedaff")};
+  align-items: center;
+  justify-content: center;
+`;
+
+const DayNumber = styled.Text`
+  font-weight: bold;
+`;
+
+const DayShort = styled.Text`
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-bottom: 2px;
+`;

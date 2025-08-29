@@ -48,6 +48,7 @@ export default function TabLayout() {
           name="stats"
           options={{
             title: "Stats",
+            headerShown: false,
             tabBarIcon: ({ color }) => <TabBarIcon name="bar-chart" color={color} />
           }}
         />

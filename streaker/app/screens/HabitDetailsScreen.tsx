@@ -1,7 +1,9 @@
 import HabitCalendar from "@/components/HabitCalendar";
 import { Habit } from "@/models/Habit";
+import styled from "styled-components/native";
+import React from "react";
 
-export default function HabitDetailsScreen({ habit}: { habit: Habit }) {
+export default function HabitDetailsScreen({ habit }: { habit: Habit }) {
 
   const getDatesBetween = (start: string, end: string) => {
     const dates: Date[] = [];
@@ -26,6 +28,40 @@ export default function HabitDetailsScreen({ habit}: { habit: Habit }) {
   return (
     <>
       <HabitCalendar doneDates={allDoneDates} />
+      <DetailsContainer>
+        <DetailBox>
+          <Label>This Streak</Label>
+          <Value>{habit.currentStreak} dni</Value>
+        </DetailBox>
+        <DetailBox>
+          <Label>Longest Streak</Label>
+          <Value>{habit.longestStreak} dni</Value>
+        </DetailBox>
+      </DetailsContainer>
     </>
   );
 }
+
+const DetailsContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 16px;
+`;
+
+const DetailBox = styled.View`
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+`;
+
+const Label = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+`;
+
+const Value = styled.Text`
+  font-size: 36px;
+  color: #9ec7e1;
+  font-weight: bold;
+`;

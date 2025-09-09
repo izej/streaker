@@ -7,6 +7,7 @@ import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -17,39 +18,42 @@ function TabBarIcon(props: {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top", "left", "right"]}>
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-          headerShown: useClientOnlyValue(false, true)
+          headerShown: useClientOnlyValue(false, true),
         }}
       >
         <Tabs.Screen
           name="index"
           options={{
-            title: "Home",
+            title: t("tabs.home"),
             headerShown: false,
-            tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />
+            tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           }}
         />
 
         <Tabs.Screen
           name="add-habit"
           options={{
-            title: "Add Habit",
+            title: t("tabs.add_habit"),
             headerShown: false,
-            tabBarIcon: ({ color }) => <TabBarIcon name="plus" color={color} />
+            tabBarIcon: ({ color }) => <TabBarIcon name="plus" color={color} />,
           }}
         />
 
         <Tabs.Screen
           name="stats"
           options={{
-            title: "Stats",
+            title: t("tabs.stats"),
             headerShown: false,
-            tabBarIcon: ({ color }) => <TabBarIcon name="bar-chart" color={color} />
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="bar-chart" color={color} />
+            ),
           }}
         />
       </Tabs>

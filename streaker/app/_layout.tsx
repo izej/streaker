@@ -8,6 +8,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { useAuthStore } from "@/store/useAuthStore";
+import { ActivityIndicator, View } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -16,7 +18,6 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -28,10 +29,15 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+  const { initialize } = useAuthStore();
+
   useEffect(() => {
     if (error) throw error;
   }, [error]);
+
+  useEffect(() => {
+    initialize();
+  }, []);
 
   useEffect(() => {
     if (loaded) {
@@ -48,13 +54,26 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const { token, loading } = useAuthStore();
+
+  if (loading) {
+    return (
+      <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <Stack screenOptions={{ headerShown: false }}>
+        {token ? (
+          <Stack.Screen name="(tabs)" />
+        ) : (
+          <Stack.Screen name="(auth)" />
+        )}
       </Stack>
     </ThemeProvider>
   );
 }
+

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { logout as logoutApi } from "@/api/auth";
 
 interface User {
   id: string;
@@ -35,9 +36,18 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   logout: async () => {
-    await AsyncStorage.removeItem("token");
-    await AsyncStorage.removeItem("user");
-    set({ token: null, user: null });
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        await logoutApi(token);
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    } finally {
+      await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("user");
+      set({ token: null, user: null });
+    }
   },
 
   setLoading: (loading) => set({ loading }),

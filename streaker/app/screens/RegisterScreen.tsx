@@ -6,22 +6,24 @@ import { MottoLogo } from "@/components/MottoLogo";
 import { Container } from "@/styles/AuthStyles";
 import { AuthForm } from "@/components/AuthForm";
 import { signup } from "@/api/auth";
+import { useTranslation } from "react-i18next";
 
 export default function RegisterScreen() {
+  const { t } = useTranslation();
   const router = useRouter();
 
   const handleRegister = async (email: string, password: string) => {
     try {
       if (!email || !password) {
-        Alert.alert("Error", "Please fill in all fields");
+        Alert.alert(t("alert.title.error"), t("auth.form.alert"));
         return;
       }
 
       const res = await signup(email, password);
-      Alert.alert("Success", "Account created!");
+      Alert.alert(t("alert.title.success"), t("auth.register.alert_success"));
       router.replace("/login");
     } catch (err: any) {
-      Alert.alert("Error", err.response?.data?.message || "Registration failed");
+      Alert.alert(t("alert.title.error"), err.response?.data?.message || t("auth.register.alert_error"));
     }
   };
 
@@ -31,8 +33,8 @@ export default function RegisterScreen() {
         <MottoLogo />
         <AuthForm
           onSubmit={handleRegister}
-          submitLabel="Register"
-          linkLabel="Already have an account? Login"
+          submitLabel={t("auth.register.submit")}
+          linkLabel={t("auth.register.link_label")}
           onLinkPress={() => router.push("/login")}
         />
       </Container>

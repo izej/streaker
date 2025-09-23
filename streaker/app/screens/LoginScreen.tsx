@@ -6,23 +6,24 @@ import { MottoLogo } from "@/components/MottoLogo";
 import { Container } from "@/styles/AuthStyles";
 import { AuthForm } from "@/components/AuthForm";
 import { login } from "@/api/auth";
+import { useTranslation } from "react-i18next";
 
 export default function LoginScreen() {
+  const { t } = useTranslation();
   const router = useRouter();
 
   const handleLogin = async (email: string, password: string) => {
     try {
       if (!email || !password) {
-        Alert.alert("Error", "Please fill in all fields");
+        Alert.alert(t("alert.title.error"), t("auth.form.alert"));
         return;
       }
 
       const res = await login(email, password);
-      // zakładam, że backend zwraca token
-      Alert.alert("Success", "Logged in!");
+      Alert.alert(t("alert.title.success"), t("auth.login.alert_success"));
       router.replace("/");
     } catch (err: any) {
-      Alert.alert("Error", err.response?.data?.message || "Login failed");
+      Alert.alert(t("alert.title.error"), err.response?.data?.message || t("auth.login.alert_error"));
     }
   };
 
@@ -32,8 +33,8 @@ export default function LoginScreen() {
         <MottoLogo />
         <AuthForm
           onSubmit={handleLogin}
-          submitLabel="Login"
-          linkLabel="Don’t have an account? Register"
+          submitLabel={t("auth.login.submit")}
+          linkLabel={t("auth.login.link_label")}
           onLinkPress={() => router.push("/register")}
         />
       </Container>

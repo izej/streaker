@@ -56,6 +56,17 @@ export default function TabLayout() {
             ),
           }}
         />
+
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: t("tabs.profile"),
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="heartbeat" color={color} />
+            ),
+          }}
+        />
       </Tabs>
     </SafeAreaView>
   );

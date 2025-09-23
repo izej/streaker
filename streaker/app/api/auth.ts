@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://10.0.2.2:8080/api/v1/auth";
+const API_URL = "http://192.168.1.28:8080/api/v1/auth";
 
 export const signup = async (email: string, password: string) => {
   const response = await axios.post(`${API_URL}/signup`, { email, password });
@@ -9,5 +9,18 @@ export const signup = async (email: string, password: string) => {
 
 export const login = async (email: string, password: string) => {
   const response = await axios.post(`${API_URL}/login`, { email, password });
+  return response.data;
+};
+
+export const logout = async (token: string) => {
+  const response = await axios.post(
+    `${API_URL}/logout`, 
+    {}, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
   return response.data;
 };

@@ -2,7 +2,28 @@
   "tabs": {
     "home": "Home",
     "add_habit": "Add Habit",
-    "stats": "Stats"
+    "stats": "Stats",
+    "profile": "Profile"
+  },
+  "auth": {
+    "form": {
+      "alert": "Please fill in all fields"
+    },
+    "register": {
+      "submit": "Register",
+      "link_label": "Already have an account? Login",
+      "alert_success": "Account created!",
+      "alert_error": "Registration failed"
+    },
+    "login": {
+      "submit": "Login",
+      "link_label": "Don't have an account? Sign up",
+      "alert_success": "Logged in!",
+      "alert_error": "Login failed"
+    },
+    "logout": {
+      "button": "Logout"
+    }
   },
   "home": {
     "today_button": "Today",
@@ -16,5 +37,11 @@
     "color": "Color",
     "emoji": "Emoji",
     "add_button": "Add Habit"
+  },
+  "alert": {
+    "title": {
+      "success": "Yeah!",
+      "error": "Oops..."
+    }
   }
 }

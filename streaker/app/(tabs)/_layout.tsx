@@ -63,7 +63,7 @@ export default function TabLayout() {
             title: t("tabs.profile"),
             headerShown: false,
             tabBarIcon: ({ color }) => (
-              <TabBarIcon name="heartbeat" color={color} />
+              <TabBarIcon name="user" color={color} />
             ),
           }}
         />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useRouter } from "expo-router";
 import ScreenWrapper from "@/components/ScreenWrapper";
 import { MottoLogo } from "@/components/MottoLogo";
@@ -29,15 +29,17 @@ export default function LoginScreen() {
 
   return (
     <ScreenWrapper>
-      <Container>
-        <MottoLogo />
-        <AuthForm
-          onSubmit={handleLogin}
-          submitLabel={t("auth.login.submit")}
-          linkLabel={t("auth.login.link_label")}
-          onLinkPress={() => router.push("/register")}
-        />
-      </Container>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <Container>
+          <MottoLogo />
+          <AuthForm
+            onSubmit={handleLogin}
+            submitLabel={t("auth.login.submit")}
+            linkLabel={t("auth.login.link_label")}
+            onLinkPress={() => router.push("/register")}
+          />
+        </Container>
+      </TouchableWithoutFeedback>
     </ScreenWrapper>
   );
 }

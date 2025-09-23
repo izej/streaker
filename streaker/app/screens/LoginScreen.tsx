@@ -5,16 +5,24 @@ import ScreenWrapper from "@/components/ScreenWrapper";
 import { MottoLogo } from "@/components/MottoLogo";
 import { Container } from "@/styles/AuthStyles";
 import { AuthForm } from "@/components/AuthForm";
+import { login } from "@/api/auth";
 
 export default function LoginScreen() {
   const router = useRouter();
 
-  const handleLogin = (email: string, password: string) => {
-    if (email && password) {
+  const handleLogin = async (email: string, password: string) => {
+    try {
+      if (!email || !password) {
+        Alert.alert("Error", "Please fill in all fields");
+        return;
+      }
+
+      const res = await login(email, password);
+      // zakładam, że backend zwraca token
       Alert.alert("Success", "Logged in!");
       router.replace("/");
-    } else {
-      Alert.alert("Error", "Please fill in all fields");
+    } catch (err: any) {
+      Alert.alert("Error", err.response?.data?.message || "Login failed");
     }
   };
 

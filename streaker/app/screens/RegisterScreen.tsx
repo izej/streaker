@@ -5,16 +5,23 @@ import ScreenWrapper from "@/components/ScreenWrapper";
 import { MottoLogo } from "@/components/MottoLogo";
 import { Container } from "@/styles/AuthStyles";
 import { AuthForm } from "@/components/AuthForm";
+import { signup } from "@/api/auth";
 
 export default function RegisterScreen() {
   const router = useRouter();
 
-  const handleRegister = (email: string, password: string) => {
-    if (email && password) {
+  const handleRegister = async (email: string, password: string) => {
+    try {
+      if (!email || !password) {
+        Alert.alert("Error", "Please fill in all fields");
+        return;
+      }
+
+      const res = await signup(email, password);
       Alert.alert("Success", "Account created!");
       router.replace("/login");
-    } else {
-      Alert.alert("Error", "Please fill in all fields");
+    } catch (err: any) {
+      Alert.alert("Error", err.response?.data?.message || "Registration failed");
     }
   };
 

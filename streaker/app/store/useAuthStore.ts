@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { logout as logoutApi } from "@/api/auth";
 
 interface User {
   id: string;
@@ -9,46 +8,38 @@ interface User {
 
 interface AuthState {
   token: string | null;
-  user: User | null;
   loading: boolean;
-  login: (token: string, user: User) => Promise<void>;
+  login: (token: string) => Promise<void>;
   logout: () => Promise<void>;
   initialize: () => Promise<void>;
+  validateToken: () => Promise<boolean>;
   setLoading: (loading: boolean) => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   token: null,
-  user: null,
   loading: true,
+
+  validateToken: async () => {
+    const { token } = get();
+    return !!token;
+  },
 
   initialize: async () => {
     const token = await AsyncStorage.getItem("token");
-    const userStr = await AsyncStorage.getItem("user");
-    const user = userStr ? JSON.parse(userStr) : null;
-    set({ token, user, loading: false });
+    set({ token, loading: false });
   },
 
-  login: async (token, user) => {
+
+  login: async (token) => {
     await AsyncStorage.setItem("token", token);
-    await AsyncStorage.setItem("user", JSON.stringify(user));
-    set({ token, user });
+    set({ token });
   },
 
   logout: async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        await logoutApi(token);
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-    } finally {
-      await AsyncStorage.removeItem("token");
-      await AsyncStorage.removeItem("user");
-      set({ token: null, user: null });
-    }
+    await AsyncStorage.removeItem("token");
+    set({ token: null });
   },
 
-  setLoading: (loading) => set({ loading }),
+  setLoading: (loading) => set({ loading })
 }));

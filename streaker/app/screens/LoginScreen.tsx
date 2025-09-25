@@ -7,10 +7,12 @@ import { Container } from "@/styles/AuthStyles";
 import { AuthForm } from "@/components/AuthForm";
 import { login } from "@/api/auth";
 import { useTranslation } from "react-i18next";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function LoginScreen() {
   const { t } = useTranslation();
   const router = useRouter();
+  const authStore = useAuthStore();
 
   const handleLogin = async (email: string, password: string) => {
     try {
@@ -20,10 +22,16 @@ export default function LoginScreen() {
       }
 
       const res = await login(email, password);
+
+      await authStore.login(res.token);
+
       Alert.alert(t("alert.title.success"), t("auth.login.alert_success"));
       router.replace("/");
     } catch (err: any) {
-      Alert.alert(t("alert.title.error"), err.response?.data?.message || t("auth.login.alert_error"));
+      Alert.alert(
+        t("alert.title.error"),
+        err.response?.data?.message || t("auth.login.alert_error")
+      );
     }
   };
 

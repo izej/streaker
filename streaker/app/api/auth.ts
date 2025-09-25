@@ -11,16 +11,3 @@ export const login = async (email: string, password: string) => {
   const response = await axios.post(`${API_URL}/login`, { email, password });
   return response.data;
 };
-
-export const logout = async (token: string) => {
-  const response = await axios.post(
-    `${API_URL}/logout`, 
-    {}, 
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  );
-  return response.data;
-};

@@ -5,7 +5,6 @@ import { Habit } from "@/models/Habit";
 import { useHabitsStore } from "@/store/useHabitsStore";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
-import { isSameDay } from "date-fns";
 
 const getRandomColor = () => {
   const colors = ["#FFCDD2", "#C8E6C9", "#BBDEFB", "#FFE0B2", "#D1C4E9"];
@@ -13,12 +12,8 @@ const getRandomColor = () => {
 };
 
 export default function HabitCard({ habit, readOnly, selectedDate }: { habit: Habit, readOnly: boolean, selectedDate: Date }) {
-  const tickHabit = useHabitsStore((state) => state.tickHabit);
-  const resetHabit = useHabitsStore((state) => state.resetHabit);
+  const { toggleHabit, getHabitsByDate } = useHabitsStore();
   const router = useRouter();
-
-  const isDone =
-    habit.doneDates?.some((d) => isSameDay(new Date(d), selectedDate)) ?? false;
 
   const bgColor = habit.color || getRandomColor();
 
@@ -36,13 +31,14 @@ export default function HabitCard({ habit, readOnly, selectedDate }: { habit: Ha
 
       {
         !readOnly && <Pressable
-          onPress={(e) => {
+          onPress={async (e) => {
             e.stopPropagation();
-            isDone ? resetHabit(habit.id) : tickHabit(habit.id);
+            await toggleHabit(habit.id);
+            await getHabitsByDate(selectedDate);
           }}
         >
           <FontAwesome
-            name={isDone ? "times" : "check"}
+            name={habit.done ? "times" : "check"}
             size={24}
             color="#333"
           />

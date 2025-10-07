@@ -7,9 +7,8 @@ const API_URL = "http://192.168.1.28:8080/api/v1/habits";
 interface HabitsState {
   habits: Habit[];
   addHabit: (name: string, color?: string, icon?: string) => Promise<void>;
-  tickHabit: (id: string, date?: Date) => void;
-  resetHabit: (id: string) => void;
-  getHabitsByDate: (date: Date) => (Habit & { done: boolean })[];
+  toggleHabit: (id: string) => Promise<void>;
+  getHabitsByDate: (date: Date) => Promise<(Habit & { done: boolean })[]>;
   getHabitById: (id: string) => Habit | undefined;
 }
 
@@ -42,40 +41,55 @@ export const useHabitsStore = create<HabitsState>((set, get) => ({
     }
   },
 
-  tickHabit: (id: string, date: Date = new Date()) => {
-    const targetDate = format(date, "yyyy-MM-dd");
+  toggleHabit: async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${API_URL}/${id}/toggle`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    set((state) => ({
-      habits: state.habits.map((h) =>
-        h.id !== id
-          ? h
-          : {
-            ...h,
-            doneDates: h.doneDates.includes(targetDate)
-              ? h.doneDates
-              : [...h.doneDates, targetDate],
-          }
-      ),
-    }));
+      if (!response.ok) {
+        throw new Error(`Failed to toggle habit: ${response.status}`);
+      }
+
+      const updatedHabit: Habit = await response.json();
+
+      set((state) => ({
+        habits: state.habits.map((h) =>
+          h.id === id ? updatedHabit : h
+        ),
+      }));
+    } catch (err) {
+      console.error("Error toggling habit:", err);
+    }
   },
 
-  resetHabit: (id: string) =>
-    set((state) => ({
-      habits: state.habits.map((h) =>
-        h.id === id
-          ? { ...h, doneDates: [], streakHistory: [], currentStreak: 0, longestStreak: 0 }
-          : h
-      ),
-    })),
+  getHabitsByDate: async (date: Date) => {
+    try {
+      const token = localStorage.getItem("token");
+      const formattedDate = format(date, "yyyy-MM-dd");
+      const response = await fetch(`${API_URL}/by-date?date=${formattedDate}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  getHabitsByDate: (date: Date) => {
-    const { habits } = get();
-    const target = format(date, "yyyy-MM-dd");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch habits by date: ${response.status}`);
+      }
 
-    return habits.map((h) => ({
-      ...h,
-      done: h.doneDates.includes(target),
-    }));
+      const habitsByDate: (Habit & { done: boolean })[] = await response.json();
+
+      set({ habits: habitsByDate });
+
+      return habitsByDate;
+    } catch (err) {
+      console.error("Error fetching habits by date:", err);
+      return [];
+    }
   },
 
   getHabitById: (id: string) => {

@@ -8,6 +8,7 @@ export interface Habit {
   streakHistory: Streak[];
   color?: string;
   icon?: string;
+  done?: string
 }
 
 export interface Streak {

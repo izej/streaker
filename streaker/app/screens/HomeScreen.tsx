@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView, View } from "react-native";
 import { useHabitsStore } from "@/store/useHabitsStore";
 import ScreenWrapper from "@/components/ScreenWrapper";
@@ -7,27 +7,24 @@ import WeekSelector from "@/components/WeekSelector";
 import styled from "styled-components/native";
 import { useRouter } from "expo-router";
 import { AppButton } from "@/components/AppButton";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export default function HomeScreen() {
   const { t } = useTranslation();
+  const router = useRouter();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const router = useRouter();
-  const habits = useHabitsStore((state) => state.habits);
+  const { habits, getHabitsByDate } = useHabitsStore();
 
-  const habitsForSelectedDate = useMemo(() => {
-    return habits.map((h) => {
-      const selectedDateString = selectedDate.toDateString();
-      const isDone = h.doneDates?.some(
-        (d) => new Date(d).toDateString() === selectedDateString
-      );
-      return { ...h, done: isDone };
-    });
-  }, [selectedDate, habits]);
+  useEffect(() => {
+    const loadHabits = async () => {
+      await getHabitsByDate(selectedDate);
+    };
+    loadHabits();
+  }, [selectedDate, getHabitsByDate]);
 
-  const toDo = habitsForSelectedDate.filter((h) => !h.done);
-  const done = habitsForSelectedDate.filter((h) => h.done);
+  const toDo = habits.filter((h) => !h.done);
+  const done = habits.filter((h) => h.done);
 
   const today = new Date();
   const isToday = (date: Date) =>
@@ -49,19 +46,26 @@ export default function HomeScreen() {
             <SectionTitle>{t("home.to_do")}</SectionTitle>
             {toDo.map((h) => (
               <ListItem key={h.id}>
-                <HabitCard habit={h} readOnly={!isToday(selectedDate)} selectedDate={selectedDate}/>
+                <HabitCard
+                  habit={h}
+                  readOnly={!isToday(selectedDate)}
+                  selectedDate={selectedDate}
+                />
               </ListItem>
-            ))
-            }
+            ))}
 
             <SectionTitle>{t("home.done")}</SectionTitle>
             {done.map((h) => (
               <ListItem key={h.id}>
-                <HabitCard habit={h} readOnly={!isToday(selectedDate)} selectedDate={selectedDate}/>
+                <HabitCard
+                  habit={h}
+                  readOnly={!isToday(selectedDate)}
+                  selectedDate={selectedDate}
+                />
               </ListItem>
-            ))
-            }
+            ))}
           </View>
+
           <AppButton title={t("home.add_button")} onPress={handleAddHabit} />
         </View>
       </ScrollView>
